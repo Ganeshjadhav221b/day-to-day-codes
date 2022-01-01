@@ -173,8 +173,16 @@ class GenericTree:
     #       | \ 
     #       7  8        
     #In above case, LCA for 7 & 9 is 5   
-    def lowest_common_ancesstor(self):
-        pass
+    def lowest_common_ancesstor(self, t1, t2):
+        t1_path = self.node_to_root_path(self.root, t1)        
+        t2_path = self.node_to_root_path(self.root, t2)
+
+        for i in t1_path:
+            for j in t2_path:
+                if i == j:
+                    return i
+        return -1
+
 
     #    10                    
     #   |   \                   
@@ -184,8 +192,15 @@ class GenericTree:
     #       | \ 
     #       7  8        
     #In above case, distance between 7 & 9 is 3(7->6, 6->5, 5->9)  
-    def distance_between_nodes(self):
-        pass
+    def distance_between_nodes(self, t1, t2):
+        t1_path = self.node_to_root_path(self.root, t1)        
+        t2_path = self.node_to_root_path(self.root, t2)
+        print('Here: ',t1_path, t2_path)
+        for i,p1 in enumerate(t1_path):
+            for j,p2 in enumerate(t2_path):
+                if p1 == p2:
+                    return i+j
+        return -1
 
     def maximum_subtree_sum(self):
         pass
@@ -196,7 +211,7 @@ class GenericTree:
 
 def test_generic_tree():
     inpList = [10,3,-1,5,6,-1,9]
-    inpList = [10,3,-1,5,6,7,-1,8,-1,-1,19]
+    inpList = [10,3,-1,5,6,7,-1,8,-1,-1,9]
     
     tree = GenericTree()
     for inp in inpList:
@@ -225,4 +240,7 @@ def test_generic_tree():
 
     print('is symmetric: ', tree.is_symmetric(tree.root, tree2.root))
     print('node to root path: ', tree.node_to_root_path(tree.root, GenericTreeNode(7)))
+    print('LCA: ', tree.lowest_common_ancesstor(GenericTreeNode(7),GenericTreeNode(9)))
+    print('distance_between_nodes: ', tree.distance_between_nodes(GenericTreeNode(7),GenericTreeNode(3)))
+
 test_generic_tree()
