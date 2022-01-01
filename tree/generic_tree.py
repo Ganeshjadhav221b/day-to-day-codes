@@ -128,9 +128,14 @@ class GenericTree:
     #       |  \              | \
     #       6   9             d   e
     #   above 2 diagrams are mirror(not to consider data, but only the pattern)
-    def is_mirror(self):
-        pass
-
+    def is_mirror(self, node1 , node2):
+        is_mirror = True
+        # print('Here: ',node1.children,'ppp',node2.children[::-1], len(node1.children) ,len(node2.children))
+        if len(node1.children) != len(node2.children):
+            return False
+        for child1, child2 in zip(node1.children,node2.children[::-1]):
+            is_mirror = self.is_mirror(child1, child2)
+        return is_mirror and True
 
     #    10                    a
     #   |   \                 |   \  
@@ -138,13 +143,26 @@ class GenericTree:
     #       |  \                   | \
     #       6   9                  d   e
     #   above 2 diagrams are symmetric(not to consider data, but only the pattern)
-    def is_symmetric(self):
-        pass
+    def is_symmetric(self, node1 , node2):
+        is_symmetric = True
+        if len(node1.children) != len(node2.children):
+            return False
+        for child1, child2 in zip(node1.children,node2.children):
+            is_symmetric = self.is_symmetric(child1, child2)
+        return is_symmetric and True
 
     #example- given 9, 10->5->9
-    def node_to_root_path(self):
-        pass
-
+    def node_to_root_path(self, currentNode, targetNode):
+        path = list()
+        if currentNode.data == targetNode.data:
+            path.append(currentNode.data)
+            return path
+        for child in currentNode.children:
+            path = self.node_to_root_path(child, targetNode)
+            if len(path) > 0:
+                path.append(currentNode.data)
+                return path
+        return path
     #in case of original, 3 and 6's ancesstor is 10
 
     #    10                    
@@ -177,12 +195,13 @@ class GenericTree:
 
 
 def test_generic_tree():
-    #inpList = [10,3,-1,5,6,-1,9]
+    inpList = [10,3,-1,5,6,-1,9]
     inpList = [10,3,-1,5,6,7,-1,8,-1,-1,19]
     
     tree = GenericTree()
     for inp in inpList:
         tree.insert(inp)
+
     tree.view(tree.root)
     print('Number of nodes : ',tree.size(tree.root))
     #We've to add 1 as root wont be counted initially
@@ -196,4 +215,14 @@ def test_generic_tree():
     print('leaf nodes: ')
     tree.leaf_nodes(tree.root)
     print()
+
+    mirroredList = [10,3,5,-1,6,-1,-1,9]
+
+    tree2= GenericTree()
+    for inp in mirroredList:
+        tree2.insert(inp)
+    print('is mirror: ', tree.is_mirror(tree.root, tree2.root))
+
+    print('is symmetric: ', tree.is_symmetric(tree.root, tree2.root))
+    print('node to root path: ', tree.node_to_root_path(tree.root, GenericTreeNode(7)))
 test_generic_tree()
