@@ -49,6 +49,10 @@ class GenericTree:
     def __init__(self):
         self.nodes = Stack()
         self.root = None
+        self.state = 0 #used for predecessor_successor
+        self.predecessor = None
+        self._successor = None
+        self.maximum_subtree_sum = -99
 
     def insert(self, data):
         node = None
@@ -62,6 +66,7 @@ class GenericTree:
                 self.root = node
             self.nodes.add(node)
         
+    #utility method to view all nodes along with children(pre-order-traversal)
     def view(self, node):
         if node is not None:
             print(node, len(node.children))
@@ -195,24 +200,75 @@ class GenericTree:
     def distance_between_nodes(self, t1, t2):
         t1_path = self.node_to_root_path(self.root, t1)        
         t2_path = self.node_to_root_path(self.root, t2)
-        print('Here: ',t1_path, t2_path)
+        #print('Here: ',t1_path, t2_path)
         for i,p1 in enumerate(t1_path):
             for j,p2 in enumerate(t2_path):
                 if p1 == p2:
                     return i+j
         return -1
 
-    def maximum_subtree_sum(self):
-        pass
+    #    10                    
+    #   |   \                   
+    #   3    5                    
+    #       |  \              
+    #       6    9
+    #       | \ 
+    #       7  8        
+    #In above case, POT is 10 3 5 6 7 8 9 
+    def pre_order_traversal(self, node):
+        if node is not None:
+            print(node.data, end = ' ')
+        for child in node.children:
+            self.pre_order_traversal(child)
+
+    #predecessor_successor is the element bfore and after target element while pre_order_traversal, in above case, with POT ->10 3 5 6 7 8 9 
+    #For 8, predecessor & successor is 7 & 9 resp.
+    def predecessor_successor(self, node, targetData):
+        if self.state == 0:
+            if node.data == targetData:
+                self.state = 1
+                #return
+            else:
+                self.predecessor = node.data
+        elif self.state == 1:
+            self._successor = node.data
+            self.state = 2
+
+        for child in node.children:
+            self.predecessor_successor(child, targetData)
+
+    #          -2(0)                    
+    #          /     \                   
+    #    -3(-3)      5(5)                    
+    #               /     \              
+    #            6(-9)      9(9*)
+    #             /   \ 
+    #        -7(-7)  -8(-8)  
+    # *->higest  
+    # terms inside parenthesis indicate sum of the tree
+    def find_maximum_subtree_sum(self, node):
+        # print('Here: ',node.data)
+        childTotal = 0
+        total = 0
+        for child in node.children:
+            childTotal =  self.find_maximum_subtree_sum(child)
+            total += childTotal
+        total += node.data 
+        self.maximum_subtree_sum = max(total, self.maximum_subtree_sum) 
+        print(node.data,  total, self.maximum_subtree_sum)
+        return  total
 
     def diameter(self):
         pass
 
 
+
 def test_generic_tree():
     inpList = [10,3,-1,5,6,-1,9]
     inpList = [10,3,-1,5,6,7,-1,8,-1,-1,9]
-    
+
+    inpListForMaxSubtreeSum = [-2,-3,-1,5,6,-7,-1,-8,-1,-1,9]
+    inpList = inpListForMaxSubtreeSum
     tree = GenericTree()
     for inp in inpList:
         tree.insert(inp)
@@ -222,6 +278,9 @@ def test_generic_tree():
     #We've to add 1 as root wont be counted initially
     # print('Number of nodes (without pass by ref): ',tree.size2(tree.root) + 1)
 
+    print('pre_order_traversal: ')
+    tree.pre_order_traversal(tree.root)
+    print()
     print("max in tree: ", tree.maximum(tree.root))
 
     print("height of tree: ", tree.height(tree.root))
@@ -242,5 +301,10 @@ def test_generic_tree():
     print('node to root path: ', tree.node_to_root_path(tree.root, GenericTreeNode(7)))
     print('LCA: ', tree.lowest_common_ancesstor(GenericTreeNode(7),GenericTreeNode(9)))
     print('distance_between_nodes: ', tree.distance_between_nodes(GenericTreeNode(7),GenericTreeNode(3)))
+    tree.predecessor_successor(tree.root, 8)
+
+    print('tree predecessor_successor: ', tree.predecessor, tree._successor)
+    tree.find_maximum_subtree_sum(tree.root)
+    print('maximum_subtree_sum', tree.maximum_subtree_sum)
 
 test_generic_tree()
