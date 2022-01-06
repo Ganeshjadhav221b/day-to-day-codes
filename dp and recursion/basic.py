@@ -110,7 +110,45 @@ def tabulation_minimum_jumps_to_end(n,arr):
 	return dp[0]
 
 arr = [3,2,4,2,0,2,3,1,2,2]
-print(tabulation_minimum_jumps_to_end(len(arr),arr))
+# print(tabulation_minimum_jumps_to_end(len(arr),arr))
 
 
 
+#Given 2d matrix where each element represent cost to jump to next step[any direction](only 1 step could be jumped though)
+#Aim to find minimum cost to reach bottom right(exit) from top left(start)
+#[2*,3*,4,1]
+#[6,3*,8,1]
+#[1,1*,0*,3*]
+#[6,7,4,2*]
+#*indicate optimal path taken
+#Maintain array ->DP which indicates minimum cost from that step until destination
+#Start from bottom right, work way right-upward
+#[14,12,11,7]
+#[13,9,13,6]
+#[7,6,5,5]
+#[19,13,6,2]
+
+def mimnimum_cost_path(matrix, m, n):
+	maximum = 999  #constant
+	right = maximum #temporary initialization
+	below = maximum #temporary initialization
+	dp = [[maximum]*n]*m
+	dp[m-1][n-1] = matrix[m-1][n-1]
+	for i in range(m-1,-1,-1):
+		for j in range(n-1,-1,-1):
+			if i == m-1 and j == n-1:
+				continue
+			belowIndex = i + 1
+			rightIndex = j + 1
+			if belowIndex < m:
+				below = dp[belowIndex][j]
+
+			if rightIndex < n:
+				right = dp[i][rightIndex]
+			 
+			dp[i][j] = min(right,below) + matrix[i][j]
+			print(i,j,rightIndex,right, belowIndex, below, matrix[i][j],dp[i][j] )
+	return dp[0][0]
+
+matrix = [[2,3,4,1],[6,3,8,1],[1,1,0,3],[6,7,4,2]]
+# print(mimnimum_cost_path(matrix, len(matrix), len(matrix[0])))
