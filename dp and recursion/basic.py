@@ -128,7 +128,7 @@ arr = [3,2,4,2,0,2,3,1,2,2]
 #[7,6,5,5]
 #[19,13,6,2]
 
-def mimnimum_cost_path(matrix, m, n):
+def tabulation_mimnimum_cost_path(matrix, m, n):
 	maximum = 999  #constant
 	right = maximum #temporary initialization
 	below = maximum #temporary initialization
@@ -152,3 +152,30 @@ def mimnimum_cost_path(matrix, m, n):
 
 matrix = [[2,3,4,1],[6,3,8,1],[1,1,0,3],[6,7,4,2]]
 # print(mimnimum_cost_path(matrix, len(matrix), len(matrix[0])))
+
+
+def flood_fill():
+	pass
+
+
+
+#consider 2d matrix
+#0 0 1
+#1 0 0
+#0 0 0
+#print ways to reach right bottom point(target) from top right(source)
+#above example- rdrd, rddr
+#Start with top right, check all directions
+def maze_path(matrix, m, n, i,j,path_so_far):
+	if i == m or j == m or matrix[i][j] == 1:
+		return
+	if i == m-1 and j == n-1:
+		print(path_so_far)
+		return
+	# print(i,j,m,n,path_so_far)
+	maze_path(matrix, len(matrix), len(matrix[0]),i+1,j,path_so_far+"d")
+	maze_path(matrix, len(matrix), len(matrix[0]),i,j+1,path_so_far+"r")
+	
+
+matrix = [[0,0,1],[1,0,0],[0,0,0]]
+maze_path(matrix, len(matrix), len(matrix[0]),0,0,"")
