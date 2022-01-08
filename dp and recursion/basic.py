@@ -132,7 +132,7 @@ def tabulation_mimnimum_cost_path(matrix, m, n):
 	maximum = 999  #constant
 	right = maximum #temporary initialization
 	below = maximum #temporary initialization
-	dp = [[maximum]*n]*m
+	dp = [[maximum for i in range(m)] for j in range(n)]
 	dp[m-1][n-1] = matrix[m-1][n-1]
 	for i in range(m-1,-1,-1):
 		for j in range(n-1,-1,-1):
@@ -147,11 +147,12 @@ def tabulation_mimnimum_cost_path(matrix, m, n):
 				right = dp[i][rightIndex]
 			 
 			dp[i][j] = min(right,below) + matrix[i][j]
-			print(i,j,rightIndex,right, belowIndex, below, matrix[i][j],dp[i][j] )
+			# print(i,j,rightIndex,right, belowIndex, below, matrix[i][j],dp[i][j] )
+			print(dp)
 	return dp[0][0]
 
 matrix = [[2,3,4,1],[6,3,8,1],[1,1,0,3],[6,7,4,2]]
-# print(mimnimum_cost_path(matrix, len(matrix), len(matrix[0])))
+print(tabulation_mimnimum_cost_path(matrix, len(matrix), len(matrix[0])))
 
 
 def flood_fill():
@@ -178,4 +179,54 @@ def maze_path(matrix, m, n, i,j,path_so_far):
 	
 
 matrix = [[0,0,1],[1,0,0],[0,0,0]]
-maze_path(matrix, len(matrix), len(matrix[0]),0,0,"")
+# maze_path(matrix, len(matrix), len(matrix[0]),0,0,"")
+
+#NOTE: Next 3 problems are related.
+#Given lets say 3 coins with limited supply->
+#2,3,5
+#find if we can for target sum, example 7
+#Here answer should be true for 7 target, false for 9
+
+#maintain x*y dp matrix, where x = number of elements, y = target sum
+#Put 1 if element is divisible or  if dp[i-1][j-x] else carry value from above row
+
+# index| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |  
+# 2    | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  0 |  
+# 3    | 0 | 0 | 1 | 1 | 0 | 1 | 0 | 0 | 0 | 0 |  0 |  
+# 5    | 0 | 0 | 1 | 1 | 0 | 1 | 0 | 1 | 1 | 0 |  1 | 
+def target_subset_sum(arr, n, target):
+	cols = target+1
+	rows = n
+	dp = [[0 for i in range(cols)] for j in range(rows)]
+	for i in range(n):
+		for j in range(target+1):
+			aboveIndex = i-1
+			withOtherIndex = j-arr[i]
+			above = 0
+			withOther = 0
+			if aboveIndex >= 0:
+				above = dp[aboveIndex][j]
+			if withOtherIndex >= 0:
+				withOther = dp[i-1][withOtherIndex]
+			dp[i][j] = max(int(arr[i] == j), above, withOther)
+			# print(i,j,arr[i],aboveIndex, withOtherIndex, int(arr[i] == j), above, withOther, dp)
+	# print(dp)
+	return dp[n-1][target]
+
+arr = [2,3,5]
+# print(target_subset_sum(arr, len(arr), 10))
+
+#Given lets say 3 coins with limited supply->
+#2,3,5
+#find number of ways to acheive target sum, example 7
+#Here answer should for 7 target be 2->(2,5), (2,3,2) 
+def coin_change_combination():
+	pass
+
+
+#Given lets say 3 coins with infinite supply->
+#2,3,5
+#Here answer should for 7 target be 5->(2,5), (5,2), (2,2,3), (2,3,2), (3,2,2)
+def coin_change_permutation():
+	pass
+
