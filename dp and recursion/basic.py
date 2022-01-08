@@ -270,18 +270,18 @@ def target_subset_sum(arr, n, target):
 # 3    		  | 1 | 0 | 1 | 1 | 1 | 1 | 2 | 1 | 2 | 2 |  2 |  
 # 5    		  | 1 | 0 | 1 | 1 | 0 | 2 | 2 | 2 | 3 | 3 |  4 | 
 
-def coin_change_combination(arr, n, target):
+def coin_change_combination(coins, n, target):
 	length = target+1
 	dp = [0 for i in range(length)]
 	dp[0] = 1
-	for i in range(n):
+	for coin in coins:
 		for j in range(length):
-			withOtherIndex = j-arr[i]
+			withOtherIndex = j-coin
 			dp[j] +=  dp[withOtherIndex] if withOtherIndex >= 0 else 0
 		
 		# print(i,j,withOtherIndex,dp)
 	return dp[target]
-print(coin_change_combination(arr, len(arr), 7))
+# print(coin_change_combination(arr, len(arr), 10))
 
 #Given lets say 3 coins with infinite supply->
 #2,3,5
@@ -290,9 +290,20 @@ print(coin_change_combination(arr, len(arr), 7))
 
 # iteration(0)| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |  
 # 2  		  | 1 | 0 | 1 | 0 | 1 | 0 | 1 | 0 | 1 | 0 |  1 |  
-# 3    		  | 1 | 0 | 1 | 1 | 1 | 1 | 2 | 1 | 2 | 2 |  2 |  
-# 5    		  | 1 | 0 | 1 | 1 | 0 | 2 | 2 | 2 | 3 | 3 |  4 | 
+# 3    		  | 1 | 0 | 1 | 1 | 1 | 2 | 2 | 3 | 4 | x |  x |  
+# 5    		  | 1 | 0 | 1 | 1 | 0 | 3 | 2 | 2 | 3 | 3 |  4 | 
 
-def coin_change_permutation():
-	pass
+def coin_change_permutation(coins, n, target):
+	length = target+1
+	dp = [0 for i in range(length)]
+	dp[0] = 1
+	for i in range(length):
+		for coin in coins:
+			dp[i] += dp[i-coin] if i >= coin else 0
+	print(dp)
+
+	return dp[target]
+
+print(coin_change_permutation(arr, len(arr), 5))
+
 
