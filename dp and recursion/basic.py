@@ -181,37 +181,42 @@ def maze_path(matrix, m, n, i,j,path_so_far):
 matrix = [[0,0,1],[1,0,0],[0,0,0]]
 # maze_path(matrix, len(matrix), len(matrix[0]),0,0,"")
 
-#NOTE: Next 3 problems are related.
-#Given lets say 3 coins with limited supply->
+#NOTE: Next 4 problems are related.
+#Given lets say 3 coins with limited supply(no duplicates)->
 #2,3,5
 #find if we can for target sum, example 7
 #Here answer should be true for 7 target, false for 9
 
 #maintain x*y dp matrix, where x = number of elements, y = target sum
-#Put 1 if element is divisible or  if dp[i-1][j-x] else carry value from above row
+#we need 2d because otherwise 2,6 would be set to 1 in this case.
 
-# index| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |  
-# 2    | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  0 |  
-# 3    | 0 | 0 | 1 | 1 | 0 | 1 | 0 | 0 | 0 | 0 |  0 |  
-# 5    | 0 | 0 | 1 | 1 | 0 | 1 | 0 | 1 | 1 | 0 |  1 | 
+# (index)element| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |  
+# (0)-          | 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  0 |  
+# (1)2    		| 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  0 |  
+# (2)3    		| 1 | 0 | 1 | 1 | 0 | 1 | 0 | 0 | 0 | 0 |  0 |  
+# (3)5    		| 1 | 0 | 1 | 1 | 0 | 1 | 0 | 1 | 1 | 0 |  1 | 
 def target_subset_sum(arr, n, target):
 	cols = target+1
-	rows = n
+	rows = n+1
 	dp = [[0 for i in range(cols)] for j in range(rows)]
-	for i in range(n):
-		for j in range(target+1):
+	for i in range(rows):
+		dp[i][0] = 1
+	for i in range(1,rows):
+		for j in range(1,cols):
 			aboveIndex = i-1
-			withOtherIndex = j-arr[i]
+			withOtherIndex = j-arr[i-1]
 			above = 0
 			withOther = 0
+			
 			if aboveIndex >= 0:
-				above = dp[aboveIndex][j]
-			if withOtherIndex >= 0:
+				above = dp[aboveIndex][j] 
+			if withOtherIndex >= 0:				#i>0 check not needed, otherwise declare 1 more extra row.
 				withOther = dp[i-1][withOtherIndex]
-			dp[i][j] = max(int(arr[i] == j), above, withOther)
+			
+			dp[i][j] = max(above, withOther)
 			# print(i,j,arr[i],aboveIndex, withOtherIndex, int(arr[i] == j), above, withOther, dp)
-	# print(dp)
-	return dp[n-1][target]
+	print(dp)
+	return dp[n][target]
 
 arr = [2,3,5]
 # print(target_subset_sum(arr, len(arr), 10))
@@ -222,37 +227,72 @@ arr = [2,3,5]
 #Here answer should for 7 target be 2->(2,5), (2,3,2) 
 
 #maintain x*y dp matrix, where x = number of elements, y = target sum
-#Add 1 if element is divisible or  if dp[i-1][j-x] else carry value from above row
 
 # index| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |  
-# 2    | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  0 |  
-# 3    | 0 | 0 | 1 | 1 | 0 | 2 | 0 | 0 | 0 | 0 |  0 |  
-# 5    | 0 | 0 | 1 | 1 | 0 | 2 | 0 | 2 | 2 | 0 |  3 | 
-def coin_change_combination(arr, n, target):
+# -    | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  0 | 
+# 2    | 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  0 |  
+# 3    | 1 | 0 | 1 | 1 | 0 | 2 | 0 | 0 | 0 | 0 |  0 |  
+# 5    | 1 | 0 | 1 | 1 | 0 | 2 | 0 | 2 | 2 | 0 |  3 | 
+def target_subset_sum(arr, n, target):
 	cols = target+1
-	rows = n
+	rows = n + 1
 	dp = [[0 for i in range(cols)] for j in range(rows)]
-	for i in range(n):
-		for j in range(target+1):
-			aboveIndex = i-1
-			withOtherIndex = j-arr[i]
-			above = 0
+	for i in range(rows):
+		dp[i][0] = 1
+	for i in range(1, rows):
+		for j in range(1, cols):
+			withOtherIndex = j-arr[i-1]
+			above = dp[i-1][j] if i >= 1 else 0
 			withOther = 0
-			if aboveIndex >= 0:
-				above = dp[aboveIndex][j]
 			if withOtherIndex >= 0:
 				withOther = dp[i-1][withOtherIndex] 
-			withOther = withOther + 1 if withOther > 0 else int(arr[i] == j)   #add 1 to with other coins indicating this coin is being added/considered
+				if withOther>0 and withOtherIndex > 0:
+					withOther +=  1    #if its not same element, then its being added (example - 1,5)
 			dp[i][j] = max(above, withOther) #+ int(arr[i] == j)
-			print(i,j,arr[i],aboveIndex, withOtherIndex, int(arr[i] == j), above, withOther)
-	# print(dp)
-	return dp[n-1][target]
+			# print(i,j,arr[i],aboveIndex, withOtherIndex, int(arr[i] == j), above, withOther)
+	print(dp)
+	return dp[n][target]
 
-# print(coin_change_combination(arr, len(arr), 10))
+# print(target_subset_sum(arr, len(arr), 10))
+
+
+
+
+#Given lets say 3 coins with infinite supply->
+#2,3,5
+#find minimum number of ways to acheive target sum, example 7
+#Here answer should for 7 target be 2->(2,5), (2,3,2) 
+#For target 10 answer would be 4 -> (2,2,2,2),(5,5),(2,2,3,3),(2,3,5)
+#maintain dp array, with length = target sum
+
+# iteration(0)| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |  
+# 2  		  | 1 | 0 | 1 | 0 | 1 | 0 | 1 | 0 | 1 | 0 |  1 |  
+# 3    		  | 1 | 0 | 1 | 1 | 1 | 1 | 2 | 1 | 2 | 2 |  2 |  
+# 5    		  | 1 | 0 | 1 | 1 | 0 | 2 | 2 | 2 | 3 | 3 |  4 | 
+
+def coin_change_combination(arr, n, target):
+	length = target+1
+	dp = [0 for i in range(length)]
+	dp[0] = 1
+	for i in range(n):
+		for j in range(length):
+			withOtherIndex = j-arr[i]
+			dp[j] +=  dp[withOtherIndex] if withOtherIndex >= 0 else 0
+		
+		# print(i,j,withOtherIndex,dp)
+	return dp[target]
+print(coin_change_combination(arr, len(arr), 7))
 
 #Given lets say 3 coins with infinite supply->
 #2,3,5
 #Here answer should for 7 target be 5->(2,5), (5,2), (2,2,3), (2,3,2), (3,2,2)
+
+
+# iteration(0)| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |  
+# 2  		  | 1 | 0 | 1 | 0 | 1 | 0 | 1 | 0 | 1 | 0 |  1 |  
+# 3    		  | 1 | 0 | 1 | 1 | 1 | 1 | 2 | 1 | 2 | 2 |  2 |  
+# 5    		  | 1 | 0 | 1 | 1 | 0 | 2 | 2 | 2 | 3 | 3 |  4 | 
+
 def coin_change_permutation():
 	pass
 
