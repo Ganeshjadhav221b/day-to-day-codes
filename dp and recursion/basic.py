@@ -152,7 +152,7 @@ def tabulation_mimnimum_cost_path(matrix, m, n):
 	return dp[0][0]
 
 matrix = [[2,3,4,1],[6,3,8,1],[1,1,0,3],[6,7,4,2]]
-print(tabulation_mimnimum_cost_path(matrix, len(matrix), len(matrix[0])))
+# print(tabulation_mimnimum_cost_path(matrix, len(matrix), len(matrix[0])))
 
 
 def flood_fill():
@@ -220,9 +220,35 @@ arr = [2,3,5]
 #2,3,5
 #find number of ways to acheive target sum, example 7
 #Here answer should for 7 target be 2->(2,5), (2,3,2) 
-def coin_change_combination():
-	pass
 
+#maintain x*y dp matrix, where x = number of elements, y = target sum
+#Add 1 if element is divisible or  if dp[i-1][j-x] else carry value from above row
+
+# index| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |  
+# 2    | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  0 |  
+# 3    | 0 | 0 | 1 | 1 | 0 | 2 | 0 | 0 | 0 | 0 |  0 |  
+# 5    | 0 | 0 | 1 | 1 | 0 | 2 | 0 | 2 | 2 | 0 |  3 | 
+def coin_change_combination(arr, n, target):
+	cols = target+1
+	rows = n
+	dp = [[0 for i in range(cols)] for j in range(rows)]
+	for i in range(n):
+		for j in range(target+1):
+			aboveIndex = i-1
+			withOtherIndex = j-arr[i]
+			above = 0
+			withOther = 0
+			if aboveIndex >= 0:
+				above = dp[aboveIndex][j]
+			if withOtherIndex >= 0:
+				withOther = dp[i-1][withOtherIndex] 
+			withOther = withOther + 1 if withOther > 0 else int(arr[i] == j)   #add 1 to with other coins indicating this coin is being added/considered
+			dp[i][j] = max(above, withOther) #+ int(arr[i] == j)
+			print(i,j,arr[i],aboveIndex, withOtherIndex, int(arr[i] == j), above, withOther)
+	# print(dp)
+	return dp[n-1][target]
+
+# print(coin_change_combination(arr, len(arr), 10))
 
 #Given lets say 3 coins with infinite supply->
 #2,3,5
