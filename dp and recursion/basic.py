@@ -290,7 +290,7 @@ def coin_change_combination(coins, n, target):
 
 # iteration(0)| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |  
 # 2  		  | 1 | 0 | 1 | 0 | 1 | 0 | 1 | 0 | 1 | 0 |  1 |  
-# 3    		  | 1 | 0 | 1 | 1 | 1 | 2 | 2 | 3 | 4 | x |  x |  
+# 3    		  | 1 |	 0 | 1 | 1 | 1 | 2 | 2 | 3 | 4 | x |  x |  
 # 5    		  | 1 | 0 | 1 | 1 | 0 | 3 | 2 | 2 | 3 | 3 |  4 | 
 
 def coin_change_permutation(coins, n, target):
