@@ -70,4 +70,60 @@ arr = [3,-5,1,6,-7,-10,9]
 arr = [3,-5,-1,6,-7,-10,9]
 arr = [3,5,7,-1,10]
 arr = [-3,5,7,1,10]
-print(first_negative_subarray(arr, len(arr),3))
+# print(first_negative_subarray(arr, len(arr),3))
+
+
+#utilty fn
+def remove_smaller_append_element(arr,element):
+	arr2 = []
+	#Remove every element smaller than current element prior to appending current element
+	for idx,num in enumerate(arr):
+		if num >= element:
+			arr2.append(num)	#Could not pop smaller element in same list as iterating(check max_subarray with i/p-[3,2,1,5])
+
+	arr2.append(element)
+	return arr2
+
+#sliding window problem
+#find first max_subarray in subarray of size k
+
+#i/p->[3,-5,1,6,-7,-10,9] , k = 3
+#O/p -> 3,6,6,6,9
+
+#i/p->[3,2,1,-1]
+#o/p->3,2
+
+def max_subarray(arr,n,k):
+	i = 0 
+	j = 0
+	resultList = []
+	demoList = []
+	while j < n:
+		element = arr[j]
+		# print('here1:', element, demoList)
+		demoList = remove_smaller_append_element(demoList,element)
+		# print('here:', element, demoList)
+		if j - i + 1 < k:
+			j += 1
+		else:
+			#2. calculation
+			res = demoList[0] 
+			resultList.append(res)
+			# print(i,j,res,resultList,demoList)
+			#3. discard earlier calculation prior to window sliding
+			if demoList[0] == arr[i]:
+				demoList.pop(0)
+			#4. slide window
+			i += 1
+			j += 1
+
+			demoList.append
+	return resultList
+
+arr = [3,-5,1,6,-7,-10,9]
+# arr = [3,-5,-1,6,-7,-10,9]
+# arr = [3,2,1,-1]
+# arr= [2,4,1,1]
+# arr = [3,2,1,5]
+arr = 2,7,5,4,8,3,1,2,-1,4
+print(max_subarray(arr, len(arr),4))
