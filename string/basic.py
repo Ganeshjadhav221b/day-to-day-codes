@@ -33,7 +33,7 @@ def longest_substring_without_repeating_characters(s, n):
 	return res	
 
 s = "pwwkew"
-print(longest_substring_without_repeating_characters(s, len(s)))
+# print(longest_substring_without_repeating_characters(s, len(s)))
 
 """
 Write a function to find the longest common prefix string amongst an array of strings.
@@ -50,3 +50,75 @@ Explanation: There is no common prefix among the input strings.
 """
 def longest_common_prefix(s,n):
 	pass
+
+
+
+"""
+sliding window application
+
+s = "aabaabaa"
+pattern = "aaba"
+anagram -> must have 3 a's, 1 b(same characters, irrespective of position)
+number of anagrams -> 4[(0,3),(1,4),(3,6),(4,7)]
+s="nayan"
+pattern="ay"
+"""
+
+#TODO: find when character frequency becomes negative
+def getFrequencyMap(s,n):
+	res = {}
+	for character in s:
+		if character in res:
+			res[character] += 1
+		else:
+			res[character] = 1
+	return res
+
+def count_anagrams(s,n, pattern, k):
+
+	i = 0
+	j = 0
+	patternFreqMap = getFrequencyMap(pattern,k)
+	count = len(patternFreqMap)  #number of unique elements
+	res = 0
+	demoPatternFreqMap = patternFreqMap
+	print(patternFreqMap)
+	for j in range(n):
+		character = s[j]
+		#1. calculate
+		if character in patternFreqMap:
+			patternFreqMap[character] -= 1
+			if patternFreqMap[character] == 0:
+				count -= 1
+		else:
+			print('Here')
+			patternFreqMap = demoPatternFreqMap #if element mismatch, reset the patternFreqMap
+			count = len(patternFreqMap)
+		if count == 0:
+			res += 1
+		print(i,j,character, count,patternFreqMap,res)
+		if j-i+1<k:
+			print('Here')
+			j += 1
+		else:
+			#2. discard prior calculation
+			leftCharacter = s[i]
+			if leftCharacter in patternFreqMap:
+				patternFreqMap[leftCharacter] += 1
+				if patternFreqMap[leftCharacter] == 1:
+					count += 1
+			#3. slide window
+			i +=1 
+			j += 1
+		# print(i,j,character, count,patternFreqMap,res)
+
+		
+	return res
+s = "aabaabaa"
+pattern = "aaba"
+# s="nayan"
+# pattern="ay"
+s="mississippi"
+pattern="is"
+print(count_anagrams(s,len(s), pattern, len(pattern)))
+
