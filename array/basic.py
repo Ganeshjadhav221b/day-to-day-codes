@@ -126,4 +126,38 @@ arr = [3,-5,1,6,-7,-10,9]
 # arr= [2,4,1,1]
 # arr = [3,2,1,5]
 arr = 2,7,5,4,8,3,1,2,-1,4
-print(max_subarray(arr, len(arr),4))
+# print(max_subarray(arr, len(arr),4))
+
+
+"""
+variable sized window(sliding)
+arr = 4,1,1,1,2,3
+k = 5
+required answer -> 4->(1,4)[1+1+1+2]
+"""
+
+def max_subarray_given_sum(arr,n,k):
+	i = 0
+	j = 0
+	maximum = -99
+	total = 0
+	subArraySize = 0
+	while j < n:
+		total += arr[j]
+		# print('Here: ',i,j,total,maximum,subArraySize)
+		if total == k:
+			subArraySize = j-i+1
+			maximum = max(maximum,subArraySize)
+			j += 1
+		elif k>total:
+			j += 1
+		else:
+			total -= arr[i]
+			total -= arr[j]
+			i+=1
+		# print(i,j,total,maximum,subArraySize)
+
+	return maximum
+
+arr = [4,1,1,1,2,3]
+print(max_subarray_given_sum(arr,len(arr),0))
