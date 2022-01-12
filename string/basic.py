@@ -120,5 +120,42 @@ pattern = "aaba"
 # pattern="ay"
 s="mississippi"
 pattern="is"
-print(count_anagrams(s,len(s), pattern, len(pattern)))
+# print(count_anagrams(s,len(s), pattern, len(pattern)))
+
+
+"""
+"""
+
+def longest_substring_with_k_unique_characters(s,n,k):
+	i = 0
+	j = 0
+
+	maxSubstringLength = -99
+
+	uniqueCharsCount = 0
+	foundCharFreq = {}
+
+	while j < n:
+		character = s[j]
+		# print('Here: ', i, j, character, uniqueCharsCount, maxSubstringLength, foundCharFreq)
+		if character in foundCharFreq: 	
+			foundCharFreq[character] += 1
+		else:
+			foundCharFreq[character] = 1
+			uniqueCharsCount += 1
+		if uniqueCharsCount == k:
+			maxSubstringLength = max(maxSubstringLength, j-i+1)
+			j += 1
+		elif uniqueCharsCount < k:
+			j += 1
+		else:
+
+			foundCharFreq[s[i]] -= 1
+			if foundCharFreq[s[i]] == 0:
+				uniqueCharsCount -= 1
+			i += 1
+	return maxSubstringLength
+
+s="aabacbebebe"
+print(longest_substring_with_k_unique_characters(s,len(s),3))
 
