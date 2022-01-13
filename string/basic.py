@@ -120,6 +120,7 @@ def longest_substring_with_k_unique_characters(s,n,k):
 			i += 1
 	return maxSubstringLength
 
+s="aaa"
 s="aabacbebebe"
 # print(longest_substring_with_k_unique_characters(s,len(s),3))
 
@@ -162,6 +163,7 @@ s = "pwwkew"
 # print(longest_substring_without_repeating_characters_1(s, len(s)))
 
 """
+we store index instead of frequency because we never would store repititive chars anyway
 """
 
 def longest_substring_without_repeating_characters_2(s,n):
@@ -187,3 +189,55 @@ s="abbc" #Use this to trace
 # s="pwwkew"
 # s="bbbbb"
 # print(longest_substring_without_repeating_characters_2(s,len(s)))
+
+
+
+"""
+given string, in which each character indicates a toy,
+aim is to find max. number of toys can one get, given
+1. continous chars/toys(substring)
+2. not exceeds number of unique chars/toys(k) 
+example -s="abaccab", k = 2
+max here would be 2,5->acca
+as one would get 4 chars(max) with 2 unique (given k) 
+
+This will not work with longest_substring_with_k_unique_characters because of -
+s = "aaaaa"
+k = 2
+answer is len(s)
+
+"""
+
+def longest_substring_with_atmost_k_unique_characters(s,n,k):
+	# i  = 0
+	# j = 0
+	# uniqueCharsCount = 0
+	# maxSubstringLength = 0
+	# foundCharIndex = {}
+	# while j < n:
+	# 	character = s[j]
+	# 	index = foundCharIndex.get(character, -1)
+	# 	foundCharIndex[character] = j
+
+	# 	print(i,j,character,index,uniqueCharsCount,foundCharIndex,maxSubstringLength)
+	# 	if index == -1: 	#if element is already considered
+	# 		uniqueCharsCount += 1
+
+	# 		#check if we've already hit the limit, if so then decrease window(by removing the i'th element completely, refer a)
+	# 		if uniqueCharsCount > k:
+	# 			iCharacter = s[i]
+	# 			i = foundCharIndex[iCharacter] + 1
+	# 			del foundCharIndex[iCharacter]
+	# 			uniqueCharsCount -= 1
+
+	# 	maxSubstringLength = max(maxSubstringLength,j-i+1)
+	# 	j += 1
+
+
+
+	return maxSubstringLength
+
+s="abaccab"
+# s="aaaaa"
+# s = "sasss"
+print(longest_substring_with_atmost_k_unique_characters(s,len(s),2))
