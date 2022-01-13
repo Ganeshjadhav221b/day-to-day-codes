@@ -1,39 +1,4 @@
-"""
-Longest Substring Without Repeating Characters
-Given a string s, find the length of the longest substring without repeating characters.
- 
-Example 1:
-Input: s = "abcabcbb"
-Output: 3
-Explanation: The answer is "abc", with the length of 3.
-Example 2:
-Input: s = "bbbbb"
-Output: 1
-Explanation: The answer is "b", with the length of 1.
-Example 3:
-Input: s = "pwwkew"
-Output: 3
-Explanation: The answer is "wke", with the length of 3.
-Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
-Example 4:
-Input: s = ""
-Output: 0
 
-"""
-
-def longest_substring_without_repeating_characters(s, n):
-	mp = {}
-	res = 0
-	i = 0
-	for j in range(n):
-		if s[j] in mp:
-			i = max(mp[s[j]],i)
-		res = max(res, j-i+1)
-		mp[s[j]] = j +1
-	return res	
-
-s = "pwwkew"
-# print(longest_substring_without_repeating_characters(s, len(s)))
 
 """
 Write a function to find the longest common prefix string amongst an array of strings.
@@ -123,6 +88,8 @@ pattern="is"
 # print(count_anagrams(s,len(s), pattern, len(pattern)))
 
 
+
+
 """
 """
 
@@ -130,7 +97,7 @@ def longest_substring_with_k_unique_characters(s,n,k):
 	i = 0
 	j = 0
 
-	maxSubstringLength = -99
+	maxSubstringLength = 0
 
 	uniqueCharsCount = 0
 	foundCharFreq = {}
@@ -157,5 +124,69 @@ def longest_substring_with_k_unique_characters(s,n,k):
 	return maxSubstringLength
 
 s="aabacbebebe"
-print(longest_substring_with_k_unique_characters(s,len(s),3))
+# print(longest_substring_with_k_unique_characters(s,len(s),3))
 
+
+"""
+Longest Substring Without Repeating Characters
+Given a string s, find the length of the longest substring without repeating characters.
+ 
+Example 1:
+Input: s = "abcabcbb"
+Output: 3
+Explanation: The answer is "abc", with the length of 3.
+Example 2:
+Input: s = "bbbbb"
+Output: 1
+Explanation: The answer is "b", with the length of 1.
+Example 3:
+Input: s = "pwwkew"
+Output: 3
+Explanation: The answer is "wke", with the length of 3.
+Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
+Example 4:
+Input: s = ""
+Output: 0
+
+"""
+
+def longest_substring_without_repeating_characters_1(s, n):
+	mp = {}
+	res = 0
+	i = 0
+	for j in range(n):
+		if s[j] in mp:
+			i = max(mp[s[j]],i)
+		res = max(res, j-i+1)
+		mp[s[j]] = j +1
+	return res	
+
+s = "pwwkew"
+# print(longest_substring_without_repeating_characters_1(s, len(s)))
+
+"""
+"""
+
+def longest_substring_without_repeating_characters_2(s,n):
+	i = 0
+	j = 0
+	maxSubstringLength = 0
+	foundCharIndex = {}
+	while j < n:
+		character = s[j]
+		index = foundCharIndex.get(character, -1)
+		# print(i,j,character, index,foundCharIndex, maxSubstringLength)
+		foundCharIndex[character] = j
+		if index > -1:
+			i = index + 1  #directlty bring the i'th index to next of already found character(duplicate)
+		else:
+			maxSubstringLength = max(maxSubstringLength, j-i+1)
+		j += 1
+
+	return maxSubstringLength
+
+s="abbc" #Use this to trace
+# s="abcabcbb"
+# s="pwwkew"
+# s="bbbbb"
+# print(longest_substring_without_repeating_characters_2(s,len(s)))
