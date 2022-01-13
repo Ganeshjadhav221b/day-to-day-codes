@@ -47,7 +47,6 @@ def count_anagrams(s,n, pattern, k):
 	count = len(patternFreqMap)  #number of unique elements
 	res = 0
 	demoPatternFreqMap = patternFreqMap
-	print(patternFreqMap)
 	for j in range(n):
 		character = s[j]
 		#1. calculate
@@ -56,14 +55,12 @@ def count_anagrams(s,n, pattern, k):
 			if patternFreqMap[character] == 0:
 				count -= 1
 		else:
-			print('Here')
 			patternFreqMap = demoPatternFreqMap #if element mismatch, reset the patternFreqMap
 			count = len(patternFreqMap)
 		if count == 0:
 			res += 1
-		print(i,j,character, count,patternFreqMap,res)
+		# print(i,j,character, count,patternFreqMap,res)
 		if j-i+1<k:
-			print('Here')
 			j += 1
 		else:
 			#2. discard prior calculation
@@ -104,7 +101,7 @@ def longest_substring_with_k_unique_characters(s,n,k):
 
 	while j < n:
 		character = s[j]
-		# print('Here: ', i, j, character, uniqueCharsCount, maxSubstringLength, foundCharFreq)
+		# print(i, j, character, uniqueCharsCount, maxSubstringLength, foundCharFreq)
 		if character in foundCharFreq: 	
 			foundCharFreq[character] += 1
 		else:
