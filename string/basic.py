@@ -206,32 +206,34 @@ s = "aaaaa"
 k = 2
 answer is len(s)
 
+Cant store index instead of frequency because of s="abaccab", here we'd remove the `a` altogether, this way & lose the longest substring
 """
 
 def longest_substring_with_atmost_k_unique_characters(s,n,k):
-	# i  = 0
-	# j = 0
-	# uniqueCharsCount = 0
-	# maxSubstringLength = 0
-	# foundCharIndex = {}
-	# while j < n:
-	# 	character = s[j]
-	# 	index = foundCharIndex.get(character, -1)
-	# 	foundCharIndex[character] = j
+	i  = 0
+	j = 0
+	uniqueCharsCount = 0
+	maxSubstringLength = 0
+	foundCharFreq = {}
+	while j < n:
+		character = s[j]
 
-	# 	print(i,j,character,index,uniqueCharsCount,foundCharIndex,maxSubstringLength)
-	# 	if index == -1: 	#if element is already considered
-	# 		uniqueCharsCount += 1
-
-	# 		#check if we've already hit the limit, if so then decrease window(by removing the i'th element completely, refer a)
-	# 		if uniqueCharsCount > k:
-	# 			iCharacter = s[i]
-	# 			i = foundCharIndex[iCharacter] + 1
-	# 			del foundCharIndex[iCharacter]
-	# 			uniqueCharsCount -= 1
-
-	# 	maxSubstringLength = max(maxSubstringLength,j-i+1)
-	# 	j += 1
+		# print(i,j,character,uniqueCharsCount,foundCharFreq,maxSubstringLength)
+		if character not in foundCharFreq: 	#if element is already considered
+			foundCharFreq[character] = 1
+			uniqueCharsCount += 1
+			while uniqueCharsCount > k:
+				iCharacter = s[i]
+				i += 1
+				foundCharFreq[iCharacter] -= 1
+				iCount = foundCharFreq[iCharacter]
+				if iCount == 0:
+					del foundCharFreq[iCharacter]
+					uniqueCharsCount -= 1
+		else:
+			foundCharFreq[character] += 1
+		maxSubstringLength = max(maxSubstringLength,j-i+1)
+		j += 1
 
 
 
@@ -240,4 +242,4 @@ def longest_substring_with_atmost_k_unique_characters(s,n,k):
 s="abaccab"
 # s="aaaaa"
 # s = "sasss"
-print(longest_substring_with_atmost_k_unique_characters(s,len(s),2))
+print(longest_substring_with_atmost_k_unique_characters(s,len(s),1))
