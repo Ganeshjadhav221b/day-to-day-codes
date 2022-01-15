@@ -242,4 +242,55 @@ def longest_substring_with_atmost_k_unique_characters(s,n,k):
 s="abaccab"
 # s="aaaaa"
 # s = "sasss"
-print(longest_substring_with_atmost_k_unique_characters(s,len(s),1))
+# print(longest_substring_with_atmost_k_unique_characters(s,len(s),1))
+
+
+"""
+find minimum window substring which has all(atleast) characters given in t
+"""
+
+def minimum_window_substring(s,n,t,m):
+	i = 0
+	j = 0
+	minSubstringLength = 999
+	tFrequencyDict = {}
+	
+	#populate the dictionary with count of characters in t
+	for character in t:
+		if character in tFrequencyDict:
+			tFrequencyDict[character] += 1  
+		else:
+		 tFrequencyDict[character] = 1
+	duplicateTFrequencyDict = tFrequencyDict.copy()
+	uniqueCharsCount = len(tFrequencyDict)
+	while j < n:
+		character = s[j]
+		frequency = tFrequencyDict.get(character,-1)
+		print(i,j,character, uniqueCharsCount,frequency,tFrequencyDict,minSubstringLength)
+		if frequency > -1:
+			frequency -= 1
+			tFrequencyDict[character] = frequency
+			if frequency == 0:
+				uniqueCharsCount -= 1
+			if uniqueCharsCount == 0:
+				while i < j:
+					minSubstringLength = min(minSubstringLength,j-i+1)
+					iCharacter = s[i]
+					frequency = tFrequencyDict.get(iCharacter,-1)
+					print('Heree:',i,j,iCharacter, uniqueCharsCount,frequency,tFrequencyDict,minSubstringLength)
+					if frequency >= 0:
+						break
+					i += 1
+					
+				#reset
+				tFrequencyDict = duplicateTFrequencyDict
+				uniqueCharsCount = len(tFrequencyDict)
+
+		j += 1
+
+	return minSubstringLength
+
+s="ttttta"
+s = "tommtaptat"
+t = "att"
+print(minimum_window_substring(s,len(s),t,len(t)))

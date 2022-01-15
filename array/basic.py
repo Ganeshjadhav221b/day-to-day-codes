@@ -160,4 +160,19 @@ def max_subarray_given_sum(arr,n,k):
 	return maximum
 
 arr = [4,1,1,1,2,3]
-print(max_subarray_given_sum(arr,len(arr),0))
+# print(max_subarray_given_sum(arr,len(arr),0))
+
+
+
+"""
+given array with all but one duplicate, find it
+"""
+def non_duplicate_in_array(arr,n):
+	temp = 0
+	for num in arr:
+		temp = temp ^ num
+	return temp
+
+
+arr = [1,2,1,3,4,3,4,2,5]
+print(non_duplicate_in_array(arr,len(arr)))
