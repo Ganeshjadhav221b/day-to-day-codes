@@ -304,6 +304,59 @@ def coin_change_permutation(coins, n, target):
 
 	return dp[target]
 
-print(coin_change_permutation(arr, len(arr), 5))
+# print(coin_change_permutation(arr, len(arr), 5))
+
+
+def longest_common_subsequence(s1,s2,n1,n2):
+	rows = n1+1
+	cols = n2+1
+	dp = [[0 for i in range(cols)] for j in range(rows)]
+	for i in range(1,rows):
+		for j in range(1,cols):
+			if s1[i-1] == s2[j-1]:   #if match, add 1 to top-left diag. element
+				dp[i][j] = dp[i-1][j-1] + 1
+			else:				#if not match, select max of top & left
+				dp[i][j] = max(dp[i][j-1],dp[i-1][j-1])
+	print('HERE;',dp)
+	return dp[n1][n2]
+s1 = "lmnop"
+s2 =  "lmmnoop"
+s1="BCDAACD"
+s2="ACDBAC"
+
+
+
+def lcs(X , Y):
+	# find the length of the strings
+	m = len(X)
+	n = len(Y)
+
+	# declaring the array for storing the dp values
+	L = [[None]*(n+1) for i in range(m+1)]
+
+	"""Following steps build L[m+1][n+1] in bottom up fashion
+	Note: L[i][j] contains length of LCS of X[0..i-1]
+	and Y[0..j-1]"""
+	for i in range(m+1):
+		for j in range(n+1):
+			if i == 0 or j == 0 :
+				L[i][j] = 0
+			elif X[i-1] == Y[j-1]:
+				L[i][j] = L[i-1][j-1]+1
+			else:
+				L[i][j] = max(L[i-1][j] , L[i][j-1])
+
+	# L[m][n] contains the length of LCS of X[0..n-1] & Y[0..m-1]
+	print(L)
+	return L[m][n]
+#end of function lcs
+
+
+# Driver program to test the above function
+s1 = "BCDAACD"
+s2 = "ACDBAC"
+print(longest_common_subsequence(s1,s2,len(s1),len(s2)))
+print(lcs(s1,s2))
+
 
 

@@ -105,8 +105,7 @@ class GenericTree:
         if node is not None:
             for child in node.children:
                 height = max(height,self.height(child))
-            height += 1
-        return height
+        return height + 1
 
     def level_order_traversal(self, node):
         queue = list()
@@ -140,7 +139,7 @@ class GenericTree:
             return False
         for child1, child2 in zip(node1.children,node2.children[::-1]):
             is_mirror = self.is_mirror(child1, child2)
-        return is_mirror and True
+        return is_mirror 
 
     #    10                    a
     #   |   \                 |   \  
@@ -154,9 +153,9 @@ class GenericTree:
             return False
         for child1, child2 in zip(node1.children,node2.children):
             is_symmetric = self.is_symmetric(child1, child2)
-        return is_symmetric and True
+        return is_symmetric 
 
-    #example- given 9, 10->5->9
+    #example- given 9, 9->5->10
     def node_to_root_path(self, currentNode, targetNode):
         path = list()
         if currentNode.data == targetNode.data:
@@ -164,10 +163,27 @@ class GenericTree:
             return path
         for child in currentNode.children:
             path = self.node_to_root_path(child, targetNode)
+            # print(currentNode.data,path)
+
             if len(path) > 0:
                 path.append(currentNode.data)
                 return path
         return path
+
+
+    def node_to_root_path2(self, currentNode, targetNode):
+        path = list()
+        found = False
+        if currentNode.data == targetNode.data:
+            print(currentNode.data)
+            return True
+        for child in currentNode.children:
+            found = self.node_to_root_path2(child, targetNode)
+            if found:
+                print(currentNode.data)
+                return True
+        return False
+
     #in case of original, 3 and 6's ancesstor is 10
 
     #    10                    
@@ -221,30 +237,37 @@ class GenericTree:
         for child in node.children:
             self.pre_order_traversal(child)
 
+
+
     #predecessor_successor is the element bfore and after target element while pre_order_traversal, in above case, with POT ->10 3 5 6 7 8 9 
     #For 8, predecessor & successor is 7 & 9 resp.
+    #state: 
+    # 0-> in search
+    # 1-> just found
+    # 2-> found and processed successor
     def predecessor_successor(self, node, targetData):
         if self.state == 0:
             if node.data == targetData:
                 self.state = 1
-                #return
             else:
                 self.predecessor = node.data
         elif self.state == 1:
             self._successor = node.data
             self.state = 2
-
+            return 
         for child in node.children:
             self.predecessor_successor(child, targetData)
+
+
 
     #          -2(0)                    
     #          /     \                   
     #    -3(-3)      5(5)                    
     #               /     \              
-    #            6(-9)      9(9*)
+    #            6(-9)      9(9)
     #             /   \ 
     #        -7(-7)  -8(-8)  
-    # *->higest  
+    # *->highest  
     # terms inside parenthesis indicate sum of the tree
     def find_maximum_subtree_sum(self, node):
         # print('Here: ',node.data)
@@ -266,9 +289,7 @@ class GenericTree:
 def test_generic_tree():
     inpList = [10,3,-1,5,6,-1,9]
     inpList = [10,3,-1,5,6,7,-1,8,-1,-1,9]
-
-    inpListForMaxSubtreeSum = [-2,-3,-1,5,6,-7,-1,-8,-1,-1,9]
-    inpList = inpListForMaxSubtreeSum
+    inpList = [-2,-3,-1,5,6,-7,-1,-8,-1,-1,9]
     tree = GenericTree()
     for inp in inpList:
         tree.insert(inp)
