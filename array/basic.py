@@ -21,7 +21,7 @@ def max_sum_subarray(arr, n, k =3):
 		# print(i,j,subArrayTotal,maximum)
 	return maximum
 arr = [3,5,-1,6,7,-10,9]
-print(max_sum_subarray(arr, len(arr),3))
+# print(max_sum_subarray(arr, len(arr),3))
 
 
 #sliding window problem
@@ -74,10 +74,14 @@ arr = [-3,5,7,1,10]
 
 
 #utilty fn
+"""
+given arr = [4,1,2,9], element = 5
+result = [9,5]
+"""
 def remove_smaller_append_element(arr,element):
 	arr2 = []
 	#Remove every element smaller than current element prior to appending current element
-	for idx,num in enumerate(arr):
+	for num in arr:
 		if num >= element:
 			arr2.append(num)	#Could not pop smaller element in same list as iterating(check max_subarray with i/p-[3,2,1,5])
 
@@ -136,7 +140,7 @@ k = 5
 required answer -> 4->(1,4)[1+1+1+2]
 """
 
-def max_subarray_given_sum(arr,n,k):
+def max_subarray_given_sum1(arr,n,k):
 	i = 0
 	j = 0
 	maximum = -99
@@ -144,7 +148,7 @@ def max_subarray_given_sum(arr,n,k):
 	subArraySize = 0
 	while j < n:
 		total += arr[j]
-		# print('Here: ',i,j,total,maximum,subArraySize)
+		print('Here: ',i,j,total,maximum,subArraySize)
 		if total == k:
 			subArraySize = j-i+1
 			maximum = max(maximum,subArraySize)
@@ -155,12 +159,34 @@ def max_subarray_given_sum(arr,n,k):
 			total -= arr[i]
 			total -= arr[j]
 			i+=1
-		# print(i,j,total,maximum,subArraySize)
+		print(i,j,total,maximum,subArraySize)
 
 	return maximum
 
+def max_subarray_given_sum(arr,n,k):
+	i = 0
+	j = 0
+	maximum = -99
+	total = 0
+	subArraySize = 0
+	while j < n:
+		total += arr[j]
+
+		# print('Here: ',i,j,total,maximum,subArraySize)
+		if total == k:
+			subArraySize = j-i+1
+			maximum = max(maximum,subArraySize)
+		elif total > k:
+			total -= arr[i]
+			i+=1
+		j += 1
+		# print(i,j,total,maximum,subArraySize)
+
+	return maximum
 arr = [4,1,1,1,2,3]
-# print(max_subarray_given_sum(arr,len(arr),0))
+# arr= [5,4,3,2,1]
+# arr= [1,2,3]
+print(max_subarray_given_sum(arr,len(arr),3))
 
 
 
