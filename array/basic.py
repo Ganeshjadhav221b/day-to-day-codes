@@ -1,7 +1,7 @@
 #sliding window problem
 #find max sum subarray of size k
-#i/p->[3,5,-1,6,7,-10,9]
-#O/p -> max(7,10,12,3,6) -> 12
+#i/p->[3,5,-1,6,7,-10,9], k = 5
+#O/p ->  sum(-1,6,7)-> 12
 
 def max_sum_subarray(arr, n, k =3):
 	i = 0
@@ -21,7 +21,7 @@ def max_sum_subarray(arr, n, k =3):
 		# print(i,j,subArrayTotal,maximum)
 	return maximum
 arr = [3,5,-1,6,7,-10,9]
-# print(max_sum_subarray(arr, len(arr),3))
+print(max_sum_subarray(arr, len(arr),3))
 
 
 #sliding window problem
@@ -175,4 +175,4 @@ def non_duplicate_in_array(arr,n):
 
 
 arr = [1,2,1,3,4,3,4,2,5]
-print(non_duplicate_in_array(arr,len(arr)))
+# print(non_duplicate_in_array(arr,len(arr)))

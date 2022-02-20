@@ -67,6 +67,14 @@ class GenericTree:
             self.nodes.add(node)
         
     #utility method to view all nodes along with children(pre-order-traversal)
+    #    10                    
+    #   |   \                   
+    #   3    5                    
+    #       |  \              
+    #       6    9
+    #       | \ 
+    #       7  8      
+    #10 3 5 6 7 8 9 
     def view(self, node):
         if node is not None:
             print(node, len(node.children))

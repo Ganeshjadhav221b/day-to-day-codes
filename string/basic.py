@@ -60,10 +60,11 @@ def count_anagrams(s,n, pattern, k):
 		if count == 0:
 			res += 1
 		# print(i,j,character, count,patternFreqMap,res)
+		#2. if window not exceeded, expand
 		if j-i+1<k:
 			j += 1
 		else:
-			#2. discard prior calculation
+			#3. discard prior calculation
 			leftCharacter = s[i]
 			if leftCharacter in patternFreqMap:
 				patternFreqMap[leftCharacter] += 1
@@ -88,6 +89,9 @@ pattern="is"
 
 
 """
+s="aabacbebebe"
+n = 3
+result = "cbebebe"
 """
 
 def longest_substring_with_k_unique_characters(s,n,k):
@@ -247,20 +251,18 @@ s="abaccab"
 
 """
 find minimum window substring which has all(atleast) characters given in t
+s="ttttta"
+t = "att"
+s = "tommtaptat"
+t = "att"
 """
 
 def minimum_window_substring(s,n,t,m):
 	i = 0
 	j = 0
 	minSubstringLength = 999
-	tFrequencyDict = {}
+	tFrequencyDict = getFrequencyMap(t,m)
 	
-	#populate the dictionary with count of characters in t
-	for character in t:
-		if character in tFrequencyDict:
-			tFrequencyDict[character] += 1  
-		else:
-		 tFrequencyDict[character] = 1
 	duplicateTFrequencyDict = tFrequencyDict.copy()
 	uniqueCharsCount = len(tFrequencyDict)
 	while j < n:
@@ -291,6 +293,6 @@ def minimum_window_substring(s,n,t,m):
 	return minSubstringLength
 
 s="ttttta"
-s = "tommtaptat"
+# s = "tommtaptat"
 t = "att"
 print(minimum_window_substring(s,len(s),t,len(t)))
