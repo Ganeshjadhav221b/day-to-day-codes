@@ -1,4 +1,4 @@
-n = 5
+n = 6
 
 def recursive_fib(n):
 	if n == 0 or n == 1:
@@ -13,10 +13,11 @@ def memoized_fib(n , seen):
 	if n == 0 or n == 1:
 		#print(n)
 		return n
-	res = seen[n]
 	if seen[n] == 0:
 		res = memoized_fib(n-1,seen) + memoized_fib(n-2,seen)
 		seen[n] = res
+	else:
+		res = seen[n]
 
 	#print(res, seen)
 	return res
@@ -50,14 +51,16 @@ def memoized_climbing_stairs(n, seen):
 		return 1
 	if n < 3:
 		return n
-	res = seen[n]
 	if seen[n] == 0:
 		res = memoized_climbing_stairs(n-1,seen)+memoized_climbing_stairs(n-2,seen)+memoized_climbing_stairs(n-3,seen) 
-	seen[n] = res
+		seen[n] = res
+	else:
+		res = seen[n]
+
 	return res
 
 
-
+n=5
 
 # print(recursive_climbing_stairs(n))
 # print(memoized_climbing_stairs(n,[0]*(n+1)))
@@ -355,8 +358,8 @@ def lcs(X , Y):
 # Driver program to test the above function
 s1 = "BCDAACD"
 s2 = "ACDBAC"
-print(longest_common_subsequence(s1,s2,len(s1),len(s2)))
-print(lcs(s1,s2))
+# print(longest_common_subsequence(s1,s2,len(s1),len(s2)))
+# print(lcs(s1,s2))
 
 
 

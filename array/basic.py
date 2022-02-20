@@ -140,7 +140,7 @@ k = 5
 required answer -> 4->(1,4)[1+1+1+2]
 """
 
-def max_subarray_given_sum1(arr,n,k):
+def largest_subarray_given_sum(arr,n,k):
 	i = 0
 	j = 0
 	maximum = -99
@@ -163,7 +163,7 @@ def max_subarray_given_sum1(arr,n,k):
 
 	return maximum
 
-def max_subarray_given_sum(arr,n,k):
+def largest_subarray_given_sum(arr,n,k):
 	i = 0
 	j = 0
 	maximum = -99
@@ -186,7 +186,7 @@ def max_subarray_given_sum(arr,n,k):
 arr = [4,1,1,1,2,3]
 # arr= [5,4,3,2,1]
 # arr= [1,2,3]
-print(max_subarray_given_sum(arr,len(arr),3))
+print(largest_subarray_given_sum(arr,len(arr),3))
 
 
 
