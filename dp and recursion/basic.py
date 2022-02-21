@@ -167,7 +167,7 @@ def flood_fill():
 #0 0 1
 #1 0 0
 #0 0 0
-#print ways to reach right bottom point(target) from top right(source)
+#print ways to reach right bottom point(target) from top left(source)
 #above example- rdrd, rddr
 #Start with top right, check all directions
 def maze_path(matrix, m, n, i,j,path_so_far):
@@ -208,14 +208,9 @@ def target_subset_sum(arr, n, target):
 		for j in range(1,cols):
 			aboveIndex = i-1
 			withOtherIndex = j-arr[i-1]
-			above = 0
-			withOther = 0
-			
-			if aboveIndex >= 0:
-				above = dp[aboveIndex][j] 
-			if withOtherIndex >= 0:				#i>0 check not needed, otherwise declare 1 more extra row.
-				withOther = dp[i-1][withOtherIndex]
-			
+			above = dp[aboveIndex][j] if aboveIndex >= 0 else 0
+			withOther = dp[i-1][withOtherIndex] if withOtherIndex >= 0 else 0
+		
 			dp[i][j] = max(above, withOther)
 			# print(i,j,arr[i],aboveIndex, withOtherIndex, int(arr[i] == j), above, withOther, dp)
 	print(dp)
@@ -227,16 +222,19 @@ arr = [2,3,5]
 #Given lets say 3 coins with limited supply->
 #2,3,5
 #find number of ways to acheive target sum, example 7
-#Here answer should for 7 target be 2->(2,5), (2,3,2) 
+#Here answer should for 7 target be 1->(2,5) 
 
+
+#find number of ways to acheive target sum, example 5
+#Here answer should for 7 target be 5->1->(5), (2,3) 
 #maintain x*y dp matrix, where x = number of elements, y = target sum
 
 # index| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |  
 # -    | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  0 | 
 # 2    | 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  0 |  
-# 3    | 1 | 0 | 1 | 1 | 0 | 2 | 0 | 0 | 0 | 0 |  0 |  
-# 5    | 1 | 0 | 1 | 1 | 0 | 2 | 0 | 2 | 2 | 0 |  3 | 
-def target_subset_sum(arr, n, target):
+# 3    | 1 | 0 | 1 | 1 | 0 | 1 | 0 | 0 | 0 | 0 |  0 |  
+# 5    | 1 | 0 | 1 | 1 | 0 | 2 | 0 | 1 | 1 | 0 |  1 | 
+def target_subset_sum_ways(arr, n, target):
 	cols = target+1
 	rows = n + 1
 	dp = [[0 for i in range(cols)] for j in range(rows)]
@@ -245,18 +243,14 @@ def target_subset_sum(arr, n, target):
 	for i in range(1, rows):
 		for j in range(1, cols):
 			withOtherIndex = j-arr[i-1]
-			above = dp[i-1][j] if i >= 1 else 0
-			withOther = 0
-			if withOtherIndex >= 0:
-				withOther = dp[i-1][withOtherIndex] 
-				if withOther>0 and withOtherIndex > 0:
-					withOther +=  1    #if its not same element, then its being added (example - 1,5)
-			dp[i][j] = max(above, withOther) #+ int(arr[i] == j)
+			above = dp[i-1][j] 
+			withOther = dp[i-1][withOtherIndex] if withOtherIndex >= 0 else 0  
+			dp[i][j] = above + withOther #+ int(arr[i] == j)
 			# print(i,j,arr[i],aboveIndex, withOtherIndex, int(arr[i] == j), above, withOther)
 	print(dp)
 	return dp[n][target]
 
-# print(target_subset_sum(arr, len(arr), 10))
+# print(target_subset_sum_ways(arr, len(arr), 10))
 
 
 
@@ -279,21 +273,21 @@ def coin_change_combination(coins, n, target):
 	dp[0] = 1
 	for coin in coins:
 		for j in range(length):
-			withOtherIndex = j-coin
-			dp[j] +=  dp[withOtherIndex] if withOtherIndex >= 0 else 0
+			dp[j] +=  dp[j-coin] if j >= coin else 0
 		
 		# print(i,j,withOtherIndex,dp)
+	print(dp)
 	return dp[target]
-# print(coin_change_combination(arr, len(arr), 10))
+print(coin_change_combination(arr, len(arr), 10))
 
 #Given lets say 3 coins with infinite supply->
 #2,3,5
 #Here answer should for 7 target be 5->(2,5), (5,2), (2,2,3), (2,3,2), (3,2,2)
-
+#Here answer should for target 10 is 6->(5,5),(2,3,5),(3,2,5),(5,3,2),(5,2,3), (2,2,2,2)
 
 # iteration(0)| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |  
 # 2  		  | 1 | 0 | 1 | 0 | 1 | 0 | 1 | 0 | 1 | 0 |  1 |  
-# 3    		  | 1 |	 0 | 1 | 1 | 1 | 2 | 2 | 3 | 4 | x |  x |  
+# 3    		  | 1 |	0 | 1 | 1 | 1 | 2 | 2 | 3 | 4 | x |  x |  
 # 5    		  | 1 | 0 | 1 | 1 | 0 | 3 | 2 | 2 | 3 | 3 |  4 | 
 
 def coin_change_permutation(coins, n, target):
@@ -307,7 +301,8 @@ def coin_change_permutation(coins, n, target):
 
 	return dp[target]
 
-# print(coin_change_permutation(arr, len(arr), 5))
+arr = [2,3,5]
+# print(coin_change_permutation(arr, len(arr), 10))
 
 
 def longest_common_subsequence(s1,s2,n1,n2):
@@ -320,7 +315,7 @@ def longest_common_subsequence(s1,s2,n1,n2):
 				dp[i][j] = dp[i-1][j-1] + 1
 			else:				#if not match, select max of top & left
 				dp[i][j] = max(dp[i][j-1],dp[i-1][j-1])
-	print('HERE;',dp)
+	print(dp)
 	return dp[n1][n2]
 s1 = "lmnop"
 s2 =  "lmmnoop"
