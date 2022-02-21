@@ -278,17 +278,24 @@ def coin_change_combination(coins, n, target):
 		# print(i,j,withOtherIndex,dp)
 	print(dp)
 	return dp[target]
-print(coin_change_combination(arr, len(arr), 10))
+# print(coin_change_combination(arr, len(arr), 10))
 
 #Given lets say 3 coins with infinite supply->
 #2,3,5
 #Here answer should for 7 target be 5->(2,5), (5,2), (2,2,3), (2,3,2), (3,2,2)
 #Here answer should for target 10 is 6->(5,5),(2,3,5),(3,2,5),(5,3,2),(5,2,3), (2,2,2,2)
 
-# iteration(0)| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |  
-# 2  		  | 1 | 0 | 1 | 0 | 1 | 0 | 1 | 0 | 1 | 0 |  1 |  
-# 3    		  | 1 |	0 | 1 | 1 | 1 | 2 | 2 | 3 | 4 | x |  x |  
-# 5    		  | 1 | 0 | 1 | 1 | 0 | 3 | 2 | 2 | 3 | 3 |  4 | 
+"""
+ 0  1  2  3  4  5  6  7 
+[1, 0, 0, 0, 0, 0, 0, 0]
+[1, 0, 0, 0, 0, 0, 0, 0]
+[1, 0, 1, 0, 0, 0, 0, 0]
+[1, 0, 1, 1, 0, 0, 0, 0]
+[1, 0, 1, 1, 1, 0, 0, 0]
+[1, 0, 1, 1, 1, 3, 0, 0]
+[1, 0, 1, 1, 1, 3, 2, 0]
+[1, 0, 1, 1, 1, 3, 2, 5]
+"""
 
 def coin_change_permutation(coins, n, target):
 	length = target+1
@@ -297,12 +304,12 @@ def coin_change_permutation(coins, n, target):
 	for i in range(length):
 		for coin in coins:
 			dp[i] += dp[i-coin] if i >= coin else 0
-	print(dp)
+		print(dp)
 
 	return dp[target]
 
 arr = [2,3,5]
-# print(coin_change_permutation(arr, len(arr), 10))
+# print(coin_change_permutation(arr, len(arr), 7))
 
 
 def longest_common_subsequence(s1,s2,n1,n2):
